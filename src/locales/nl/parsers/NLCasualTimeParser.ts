@@ -12,13 +12,13 @@ export default class NLCasualTimeParser extends AbstractParserWithWordBoundaryCh
     }
 
     innerExtract(context: ParsingContext, match: RegExpMatchArray) {
-        const targetDate = context.refDate;
+        const targetDate = context.reference.getDateWithAdjustedTimezone();
         const component = context.createParsingComponents();
 
         if (match[DAY_GROUP] === "deze") {
-            component.assign("day", context.refDate.getDate());
-            component.assign("month", context.refDate.getMonth() + 1);
-            component.assign("year", context.refDate.getFullYear());
+            component.assign("day", targetDate.getDate());
+            component.assign("month", targetDate.getMonth() + 1);
+            component.assign("year", targetDate.getFullYear());
         }
 
         switch (match[MOMENT_GROUP].toLowerCase()) {

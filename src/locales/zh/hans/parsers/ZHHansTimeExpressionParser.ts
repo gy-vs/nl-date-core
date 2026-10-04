@@ -74,14 +74,15 @@ export default class ZHHansTimeExpressionParser extends AbstractParserWithWordBo
         }
 
         const result = context.createParsingResult(match.index, match[0]);
-        const startMoment = new Date(context.refDate.getTime());
+        const refDate = context.reference.getDateWithAdjustedTimezone();
+        const startMoment = new Date(refDate.getTime());
 
         // ----- Day
         if (match[DAY_GROUP_1]) {
             const day1 = match[DAY_GROUP_1];
             if (day1 == "明") {
                 // Check not "Tomorrow" on late night
-                if (context.refDate.getHours() > 1) {
+                if (refDate.getHours() > 1) {
                     startMoment.setDate(startMoment.getDate() + 1);
                 }
             } else if (day1 == "昨") {
@@ -248,7 +249,7 @@ export default class ZHHansTimeExpressionParser extends AbstractParserWithWordBo
             const day1 = secondMatch[DAY_GROUP_1];
             if (day1 == "明") {
                 // Check not "Tomorrow" on late night
-                if (context.refDate.getHours() > 1) {
+                if (refDate.getHours() > 1) {
                     endMoment.setDate(endMoment.getDate() + 1);
                 }
             } else if (day1 == "昨") {

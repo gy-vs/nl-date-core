@@ -30,7 +30,7 @@ export default class ZHHantRelationWeekdayParser extends AbstractParserWithWordB
             modifier = "this";
         }
 
-        const date = new Date(context.refDate.getTime());
+        const date = context.reference.getDateWithAdjustedTimezone();
         let startMomentFixed = false;
         const refOffset = date.getDay();
 

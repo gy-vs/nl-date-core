@@ -56,7 +56,7 @@ export default class ZHHantDeadlineFormatParser extends AbstractParserWithWordBo
                 duration.year = number;
             }
 
-            const date = addDuration(context.refDate, duration);
+            const date = addDuration(context.reference.getDateWithAdjustedTimezone(), duration);
             result.start.assign("year", date.getFullYear());
             result.start.assign("month", date.getMonth() + 1);
             result.start.assign("day", date.getDate());
@@ -71,7 +71,7 @@ export default class ZHHantDeadlineFormatParser extends AbstractParserWithWordBo
             duration.hour = number;
         }
 
-        const date = addDuration(context.refDate, duration);
+        const date = addDuration(context.reference.getDateWithAdjustedTimezone(), duration);
         result.start.imply("year", date.getFullYear());
         result.start.imply("month", date.getMonth() + 1);
         result.start.imply("day", date.getDate());

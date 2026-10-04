@@ -9,7 +9,7 @@ export default class RUCasualTimeParser extends AbstractParserWithLeftRightBound
     }
 
     innerExtract(context: ParsingContext, match: RegExpMatchArray) {
-        let targetDate = context.refDate;
+        let targetDate = context.reference.getDateWithAdjustedTimezone();
         const lowerText = match[0].toLowerCase();
         const component = context.createParsingComponents();
 

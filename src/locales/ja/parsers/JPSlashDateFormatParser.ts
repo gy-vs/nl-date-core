@@ -44,7 +44,7 @@ export default class JPSlashDateFormatParser implements Parser {
             const year = findMostLikelyADYear(rawYearNumber);
             result.assign("year", year);
         } else {
-            const year = findYearClosestToRef(context.reference.instant, day, month);
+            const year = findYearClosestToRef(context.reference.getDateWithAdjustedTimezone(), day, month);
             result.imply("year", year);
         }
 

@@ -37,7 +37,7 @@ export default class ITRelativeDateFormatParser extends AbstractParserWithWordBo
         }
 
         const components = context.createParsingComponents();
-        let date = new Date(context.reference.instant.getTime());
+        let date = context.reference.getDateWithAdjustedTimezone();
 
         // This week
         if (unitWord.match(/settimana/i)) {
