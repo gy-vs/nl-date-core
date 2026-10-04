@@ -57,7 +57,7 @@ export default class JPCasualDateParser implements Parser {
             components.assign("meridiem", Meridiem.AM);
         }
 
-        const date = context.refDate;
+        const date = context.reference.getDateWithAdjustedTimezone();
         components.assign("day", date.getDate());
         components.assign("month", date.getMonth() + 1);
         components.assign("year", date.getFullYear());

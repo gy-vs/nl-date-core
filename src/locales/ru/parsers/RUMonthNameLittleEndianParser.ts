@@ -46,7 +46,7 @@ export default class RUMonthNameLittleEndianParser extends AbstractParserWithLef
             const yearNumber = parseYear(match[YEAR_GROUP]);
             result.start.assign("year", yearNumber);
         } else {
-            const year = findYearClosestToRef(context.refDate, day, month);
+            const year = findYearClosestToRef(context.reference.getDateWithAdjustedTimezone(), day, month);
             result.start.imply("year", year);
         }
 

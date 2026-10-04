@@ -43,7 +43,7 @@ export default class UKRelativeDateFormatParser extends AbstractParserWithLeftRi
         }
 
         const components = context.createParsingComponents();
-        let date = new Date(context.reference.instant.getTime());
+        let date = context.reference.getDateWithAdjustedTimezone();
 
         // This week
         if (timeunit.match(/week/i)) {

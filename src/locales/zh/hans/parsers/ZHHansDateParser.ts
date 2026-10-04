@@ -56,7 +56,7 @@ export default class ZHHansDateParser extends AbstractParserWithWordBoundaryChec
             if (isNaN(day)) day = zhStringToNumber(match[DAY_GROUP]);
             result.start.assign("day", day);
         } else {
-            result.start.imply("day", context.refDate.getDate());
+            result.start.imply("day", context.reference.getDateWithAdjustedTimezone().getDate());
         }
 
         //Year
@@ -65,7 +65,7 @@ export default class ZHHansDateParser extends AbstractParserWithWordBoundaryChec
             if (isNaN(year)) year = zhStringToYear(match[YEAR_GROUP]);
             result.start.assign("year", year);
         } else {
-            result.start.imply("year", context.refDate.getFullYear());
+            result.start.imply("year", context.reference.getDateWithAdjustedTimezone().getFullYear());
         }
 
         return result;

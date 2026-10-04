@@ -42,7 +42,7 @@ export default class JPStandardParser implements Parser {
 
             components.assign("year", year);
         } else {
-            const year = findYearClosestToRef(context.refDate, day, month);
+            const year = findYearClosestToRef(context.reference.getDateWithAdjustedTimezone(), day, month);
             components.imply("year", year);
         }
 

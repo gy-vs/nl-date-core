@@ -18,8 +18,9 @@ export default class ForwardDateRefiner implements Refiner {
 
         results.forEach((result) => {
             let refDate = context.reference.getDateWithAdjustedTimezone();
+            const refInstant = context.reference.instant;
 
-            if (result.start.isOnlyTime() && context.reference.instant > result.start.date()) {
+            if (result.start.isOnlyTime() && refInstant > result.start.date()) {
                 const refDate = context.reference.getDateWithAdjustedTimezone();
                 const refFollowingDay = new Date(refDate);
                 refFollowingDay.setDate(refFollowingDay.getDate() + 1);
@@ -39,7 +40,7 @@ export default class ForwardDateRefiner implements Refiner {
                 }
             }
 
-            if (result.start.isOnlyWeekdayComponent() && refDate > result.start.date()) {
+            if (result.start.isOnlyWeekdayComponent() && refInstant > result.start.date()) {
                 let daysToAdd = result.start.get("weekday") - refDate.getDay();
                 if (daysToAdd <= 0) {
                     daysToAdd += 7;
@@ -66,8 +67,8 @@ export default class ForwardDateRefiner implements Refiner {
 
             // In case where we know the month, but not which year (e.g. "in December", "25th December"),
             // try move to another year (up-to 3 times)
-            if (result.start.isDateWithUnknownYear() && refDate > result.start.date()) {
-                for (let i = 0; i < 3 && refDate > result.start.date(); i++) {
+            if (result.start.isDateWithUnknownYear() && refInstant > result.start.date()) {
+                for (let i = 0; i < 3 && refInstant > result.start.date(); i++) {
                     result.start.imply("year", result.start.get("year") + 1);
                     context.debug(() => {
                         console.log(`${this.constructor.name} adjusted ${result} year (${result.start})`);

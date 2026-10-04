@@ -20,7 +20,7 @@ export default class SVCasualDateParser extends AbstractParserWithWordBoundaryCh
     }
 
     innerExtract(context: ParsingContext, match: RegExpMatchArray): ParsingComponents | ParsingResult {
-        const targetDate = context.refDate;
+        const targetDate = context.reference.getDateWithAdjustedTimezone();
         const dateKeyword = (match[DATE_GROUP] || "").toLowerCase();
         const timeKeyword = (match[TIME_GROUP] || "").toLowerCase();
 

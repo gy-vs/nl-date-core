@@ -183,3 +183,63 @@ test("Test - Precise date/time mentioned", function () {
         expect(result).toBeDate(new Date(text));
     });
 });
+
+// Parsing with a reference timezone must give the same result as parsing on a system
+// already in that timezone (without reference timezone), regardless of the system timezone.
+// The reference instant 2024-03-06T23:30:00Z is Thursday 2024-03-07 08:30 in JST,
+// but still Wednesday evening in UTC/America — so host timezones must not leak into results.
+test("Test - Reference with timezone is independent of the system timezone", function () {
+    const refInstant = new Date("2024-03-06T23:30:00Z"); // Thu 2024-03-07 08:30 JST
+    const reference = { instant: refInstant, timezone: "JST" };
+
+    // English - weekday with forwardDate: the coming Thursday is today, not next week
+    testSingleCase(chrono.en.casual, "Thursday", reference, { forwardDate: true }, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T12:00:00+09:00"));
+    });
+
+    // English - date without year with forwardDate: March 7 is today (this year), not next year
+    testSingleCase(chrono.en.casual, "March 7", reference, { forwardDate: true }, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T12:00:00+09:00"));
+    });
+
+    // English - time-only with forwardDate: 3pm today in JST
+    testSingleCase(chrono.en.casual, "3pm", reference, { forwardDate: true }, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T15:00:00+09:00"));
+    });
+
+    // English - casual relative date
+    testSingleCase(chrono.en.casual, "tomorrow", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T23:30:00Z"));
+    });
+
+    // Chinese (simplified) - 明天 is Friday in JST, not the system timezone's "tomorrow"
+    testSingleCase(chrono.zh.hans, "明天", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-08T12:00:00+09:00"));
+    });
+
+    testSingleCase(chrono.zh.hans, "今天上午9点", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T09:00:00+09:00"));
+    });
+
+    testSingleCase(chrono.zh.hans, "下午3点", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T15:00:00+09:00"));
+    });
+
+    testSingleCase(chrono.zh.hans, "3天内", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-10T12:00:00+09:00"));
+    });
+
+    // Chinese (traditional)
+    testSingleCase(chrono.zh.hant, "明天", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-08T12:00:00+09:00"));
+    });
+
+    testSingleCase(chrono.zh.hant, "今日下午3點", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T15:00:00+09:00"));
+    });
+
+    // Japanese
+    testSingleCase(chrono.ja, "明日", reference, (result) => {
+        expect(result).toBeDate(new Date("2024-03-07T23:30:00Z"));
+    });
+});

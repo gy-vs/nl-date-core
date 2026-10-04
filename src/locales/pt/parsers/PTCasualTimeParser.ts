@@ -9,7 +9,7 @@ export default class PTCasualTimeParser extends AbstractParserWithWordBoundaryCh
     }
 
     innerExtract(context: ParsingContext, match: RegExpMatchArray) {
-        const targetDate = context.refDate;
+        const targetDate = context.reference.getDateWithAdjustedTimezone();
         const component = context.createParsingComponents();
         switch (match[1].toLowerCase()) {
             case "tarde":
